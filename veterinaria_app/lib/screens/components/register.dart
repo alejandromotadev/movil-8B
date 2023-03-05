@@ -8,6 +8,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final TextEditingController name = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController conpassword = TextEditingController();
   bool passwordVisible = false;
   bool agree = false;
   @override
