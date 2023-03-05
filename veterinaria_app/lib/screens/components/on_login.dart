@@ -94,19 +94,13 @@ class _OnLoginState extends State<OnLogin> {
                                 if (user != null) {
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                          builder: (_) =>
-                                              HomeScreen()));
+                                          builder: (_) => HomeScreen()));
                                 }
                                 if (emailController.text.isEmpty &&
                                     passwordController.text.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text('Campos vacios')));
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'email or password incorrect')));
                                 }
                               }
                             },
