@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../models/user_model.dart';
+import '../../services/login_interface.dart';
+import '../../services/login_service.dart';
 import '../home.dart';
 
 class OnLogin extends StatefulWidget {
@@ -9,6 +12,9 @@ class OnLogin extends StatefulWidget {
 }
 
 class _OnLoginState extends State<OnLogin> {
+  final ILogin loginService = LoginService();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +44,24 @@ class _OnLoginState extends State<OnLogin> {
                     padding: const EdgeInsets.only(top: 300),
                     child: Column(
                       children: [
-                        const Padding(
-                          padding:  EdgeInsets.only(bottom: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
                           child: TextField(
-                      
-                            decoration:  InputDecoration(
-                              hintText: ('email'),
-                              prefixIcon: Icon(Icons.email, color: Colors.black)
-                            ),
+                            controller: emailController,
+                            decoration: const InputDecoration(
+                                hintText: ('email'),
+                                prefixIcon:
+                                    Icon(Icons.email, color: Colors.black)),
+                            textInputAction: TextInputAction.next,
                           ),
                         ),
-                         const TextField(
-                          decoration:  InputDecoration(
-                            hintText: ('password'),
-                              prefixIcon: Icon(Icons.lock, color: Colors.black)
-                          ),
+                        TextField(
+                          controller: passwordController,
+                          decoration: const InputDecoration(
+                              hintText: ('password'),
+                              prefixIcon:
+                                  Icon(Icons.lock, color: Colors.black)),
+                          textInputAction: TextInputAction.done,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -75,13 +84,37 @@ class _OnLoginState extends State<OnLogin> {
                             fillColor: Colors.lightBlue,
                             padding: const EdgeInsets.symmetric(vertical: 20),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0)
-                            ),
+                                borderRadius: BorderRadius.circular(20.0)),
                             onPressed: () async {
-
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const HomeScreen()));
+                              if (emailController.text.isNotEmpty &&
+                                  passwordController.text.isNotEmpty) {
+                                UserModel? user = await loginService.login(
+                                    emailController.text,
+                                    passwordController.text);
+                                if (user != null) {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              HomeScreen(user: user)));
+                                }
+                                if (emailController.text.isEmpty &&
+                                    passwordController.text.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Campos vacios')));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'email or password incorrect')));
+                                }
+                              }
                             },
-                            child: const Text("Iniciar Sesion", style: TextStyle(color: Colors.white),),),
+                            child: const Text(
+                              "Iniciar Sesion",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         )
                       ],
                     ),

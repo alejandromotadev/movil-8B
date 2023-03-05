@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:veterinaria_app/screens/components/on_home.dart';
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
 
+import '../models/user_model.dart';
+
+class HomeScreen extends StatelessWidget {
+  final UserModel user;
+  HomeScreen({required this.user});
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: OnHomeScreen(),);
+    return Scaffold(
+      body: OnHomeScreen(user: user),
+    );
   }
 }

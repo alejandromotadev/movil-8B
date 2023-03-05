@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../models/user_model.dart';
 
 class OnHomeScreen extends StatefulWidget {
-  const OnHomeScreen({Key? key}) : super(key: key);
-
+  final UserModel user;
+  OnHomeScreen({required this.user});
   @override
   State<OnHomeScreen> createState() => _OnHomeScreenState();
 }
@@ -10,9 +11,15 @@ class OnHomeScreen extends StatefulWidget {
 class _OnHomeScreenState extends State<OnHomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('on home screen'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(widget.user.email),
+            Text(widget.user.token),
+          ],
+        ),
       ),
     );
   }
