@@ -3,14 +3,15 @@ import "../models/user_model.dart";
 import "register_interface.dart";
 
 class RegisterService extends IRegister {
-  Future<UserModel?> login(
-      String name, String email, String password, String compassword) async {
+  @override
+  Future<UserModel?> register(
+      String name, String email, String password) async {
     final api = "https://reqres.in/api/register";
     final data = {
       "name": name,
       "email": email,
       "password": password,
-      "compassword": compassword
+      // "compassword": compassword
     };
     final dio = Dio();
     Response response;

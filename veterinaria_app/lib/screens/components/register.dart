@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../models/user_model.dart';
+import '../../services/register_interface.dart';
+import '../../services/register_service.dart';
+import '../home.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -8,6 +12,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final IRegister registerService = RegisterService();
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
@@ -55,12 +60,14 @@ class _RegisterState extends State<Register> {
                         ],
                       ),
                       TextField(
+                        controller: name,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                           hintText: ('Nombre completo'),
                         ),
+                        textInputAction: TextInputAction.next,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -70,12 +77,14 @@ class _RegisterState extends State<Register> {
                         ],
                       ),
                       TextField(
+                        controller: email,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                           hintText: ('Direccion de correo'),
                         ),
+                        textInputAction: TextInputAction.next,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -85,6 +94,7 @@ class _RegisterState extends State<Register> {
                         ],
                       ),
                       TextField(
+                        controller: password,
                         obscureText: passwordVisible,
                         decoration: InputDecoration(
                           suffixIcon: GestureDetector(
@@ -102,6 +112,7 @@ class _RegisterState extends State<Register> {
                           ),
                           hintText: ('Contrasena'),
                         ),
+                        textInputAction: TextInputAction.done,
                       ),
                       const Text(
                         'La contrasena debe contener caracteres, numeros y simbolos con un minimo de 6 caracteres.',
@@ -160,8 +171,31 @@ class _RegisterState extends State<Register> {
                             style: TextStyle(color: Colors.black),
                           ),
                           TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/login');
+                              onPressed: () async {
+                                if (name.text.isNotEmpty &&
+                                    email.text.isNotEmpty &&
+                                    password.text.isNotEmpty) {
+                                  UserModel? user =
+                                      await registerService.register(
+                                          name.text, email.text, password.text);
+                                  if (user != null) {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                HomeScreen(user: user)));
+                                  }
+                                  if (email.text.isEmpty &&
+                                      password.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Campos vacios')));
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'email or password incorrect')));
+                                  }
+                                }
                               },
                               child: const Text(
                                 'Iniciar sesion',
