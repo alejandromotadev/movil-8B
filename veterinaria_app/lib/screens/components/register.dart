@@ -181,8 +181,7 @@ class _RegisterState extends State<Register> {
                                   if (user != null) {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                            builder: (_) =>
-                                                HomeScreen(user: user)));
+                                            builder: (_) => HomeScreen()));
                                   }
                                   if (email.text.isEmpty &&
                                       password.text.isEmpty) {

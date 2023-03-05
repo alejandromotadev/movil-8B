@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../models/user_model.dart';
+import '../../../models/user_model.dart';
 
 class OnHomeScreen extends StatefulWidget {
-  final UserModel user;
-  OnHomeScreen({required this.user});
+  // final UserModel user;
+  // OnHomeScreen({required this.user, userCredential});
   @override
   State<OnHomeScreen> createState() => _OnHomeScreenState();
 }
@@ -16,8 +16,7 @@ class _OnHomeScreenState extends State<OnHomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(widget.user.email),
-            Text(widget.user.token),
+            Text("welcome"),
           ],
         ),
       ),

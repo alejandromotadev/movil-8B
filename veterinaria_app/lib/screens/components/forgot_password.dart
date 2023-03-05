@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RecuperarContrasena extends StatefulWidget {
@@ -8,6 +9,16 @@ class RecuperarContrasena extends StatefulWidget {
 }
 
 class _RecuperarContrasenaState extends State<RecuperarContrasena> {
+  final email = TextEditingController();
+  // final auth = FirebaseAuth.instance;
+
+  void dispose() {
+    email.dispose();
+    super.dispose();
+  }
+
+  Future passwordReset() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

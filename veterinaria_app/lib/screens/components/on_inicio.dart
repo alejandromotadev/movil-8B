@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:veterinaria_app/services/firebase_auth_methods.dart';
+import '../home.dart';
 
 void main() => runApp(const OnInicio());
 
@@ -35,10 +36,9 @@ class _OnInicioState extends State<OnInicio> {
                         borderRadius: BorderRadius.circular(20))),
                 onPressed: () async {
                   try {
-                    // final UserCredential userCredential =
                     await signInWithGoogle();
-                    // Redirigir a la siguiente vista
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => HomeScreen()));
                   } on FirebaseAuthException catch (e) {
                     print('Error de inicio de sesión con Google: $e');
                   } catch (e) {
@@ -63,8 +63,8 @@ class _OnInicioState extends State<OnInicio> {
                   onPressed: () async {
                     try {
                       await signInWithFacebook();
-                      // Redirigir a la siguiente vista
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => HomeScreen()));
                     } on FirebaseAuthException catch (e) {
                       print('Error de inicio de sesión con Facebook: $e');
                     } catch (e) {

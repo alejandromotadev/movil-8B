@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/recover_password': (context) => const RecuperarContrasena(),
         '/on_boarding': (context) => const OnBoarding(),
+        // '/home': (context) => HomeScreen(userCredential),
       },
     );
   }

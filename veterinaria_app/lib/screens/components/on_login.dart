@@ -95,7 +95,7 @@ class _OnLoginState extends State<OnLogin> {
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                           builder: (_) =>
-                                              HomeScreen(user: user)));
+                                              HomeScreen()));
                                 }
                                 if (emailController.text.isEmpty &&
                                     passwordController.text.isEmpty) {
