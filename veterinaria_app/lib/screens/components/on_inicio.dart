@@ -62,8 +62,7 @@ class _OnInicioState extends State<OnInicio> {
                           borderRadius: BorderRadius.circular(20))),
                   onPressed: () async {
                     try {
-                      final UserCredential userCredential =
-                          await signInWithFacebook();
+                      await signInWithFacebook();
                       // Redirigir a la siguiente vista
                       Navigator.pushReplacementNamed(context, '/home');
                     } on FirebaseAuthException catch (e) {

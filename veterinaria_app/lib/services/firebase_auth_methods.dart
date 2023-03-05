@@ -20,14 +20,17 @@ Future<UserCredential> signInWithGoogle() async {
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
-Future<UserCredential> signInWithFacebook() async {
+Future<UserCredential?> signInWithFacebook() async {
   // Trigger the sign-in flow
   final LoginResult loginResult = await FacebookAuth.instance.login();
-
-  // Create a credential from the access token
-  final OAuthCredential facebookAuthCredential =
-      FacebookAuthProvider.credential(loginResult.accessToken!.token);
-
-  // Once signed in, return the UserCredential
-  return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  if (loginResult.status == LoginStatus.success) {
+    // Once signed in, return the UserCredential
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  } else {
+    print(loginResult.status);
+    print(loginResult.message);
+  }
+  return null;
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="app_name">flutter auth</string>
     <string name="facebook_app_id">765651044679631</string>
     <string name="fb_login_protocol_scheme">fb765651044679631</string>
     <string name="facebook_client_token">f45a133620263c225a42d3163d50d2cf</string>
