@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -38,7 +40,7 @@ class _OnInicioState extends State<OnInicio> {
                   try {
                     await signInWithGoogle();
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => HomeScreen()));
+                        MaterialPageRoute(builder: (_) => const HomeScreen()));
                   } on FirebaseAuthException catch (e) {
                     print('Error de inicio de sesión con Google: $e');
                   } catch (e) {
@@ -64,7 +66,7 @@ class _OnInicioState extends State<OnInicio> {
                     try {
                       await signInWithFacebook();
                       Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => HomeScreen()));
+                          MaterialPageRoute(builder: (_) => const HomeScreen()));
                     } on FirebaseAuthException catch (e) {
                       print('Error de inicio de sesión con Facebook: $e');
                     } catch (e) {

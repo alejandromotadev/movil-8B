@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+final FacebookAuth facebookAuth = FacebookAuth.instance;
 Future<UserCredential> signInWithGoogle() async {
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -13,15 +15,21 @@ Future<UserCredential> signInWithGoogle() async {
     idToken: googleAuth?.idToken,
   );
 
-  return await FirebaseAuth.instance.signInWithCredential(credential);
+  return await firebaseAuth.signInWithCredential(credential);
 }
 
-Future<UserCredential?> signInWithFacebook() async {
-  // Trigger the sign-in flow
-  final LoginResult loginResult = await FacebookAuth.instance.login();
-
-  // Once signed in, return the UserCredential
-  final OAuthCredential facebookAuthCredential =
-      FacebookAuthProvider.credential(loginResult.accessToken!.token);
-  return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+Future signInWithFacebook() async {
+  final LoginResult result = await facebookAuth.login();
+  if (result.status == LoginStatus.success) {
+    try {
+      final OAuthCredential credential =
+          FacebookAuthProvider.credential(result.accessToken!.token);
+      return await firebaseAuth.signInWithCredential(credential);
+      // saving the values
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+    }
+  } else {
+    print('no se pudo jejeje');
+  }
 }

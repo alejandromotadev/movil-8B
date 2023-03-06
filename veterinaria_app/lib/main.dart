@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:veterinaria_app/screens/inicio.dart';
-import 'package:veterinaria_app/screens/home.dart';
 import 'package:veterinaria_app/screens/login.dart';
 import 'package:veterinaria_app/screens/components/forgot_password.dart';
 import 'package:veterinaria_app/screens/components/on_boarding.dart';
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),

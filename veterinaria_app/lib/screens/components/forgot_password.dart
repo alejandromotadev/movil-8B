@@ -1,5 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../models/user_model.dart';
+import '../../services/email_verify_interface.dart';
+import '../../services/email_verify_service.dart';
+import '../../services/recover_pass_interface.dart';
+import '../../services/recover_pass_service.dart';
+import '../home.dart';
 
 class RecuperarContrasena extends StatefulWidget {
   const RecuperarContrasena({super.key});
@@ -9,16 +14,8 @@ class RecuperarContrasena extends StatefulWidget {
 }
 
 class _RecuperarContrasenaState extends State<RecuperarContrasena> {
-  final email = TextEditingController();
-  // final auth = FirebaseAuth.instance;
-
-  void dispose() {
-    email.dispose();
-    super.dispose();
-  }
-
-  Future passwordReset() async {}
-
+  final IEmail emailService = EmailService();
+  final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +64,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                 ),
               ),
               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -95,12 +93,25 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                       width: 300,
                       child: MaterialButton(
                         color: const Color.fromARGB(255, 103, 165, 105),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SolicitudContrasena()));
+                        onPressed: () async {
+                          String email = emailController.text;
+                          print('onpressed');
+                          if (emailController.text.isNotEmpty) {
+                            print('if');
+                            UserModel? user = await emailService.emailVerify(
+                                emailController.text);
+                            print(user);
+                            if (user != null) {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (_) =>  SolicitudContrasena(getEmail: email)));
+                            }
+                            if (emailController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Campos vacios')));
+                            }
+                          }
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
@@ -122,15 +133,15 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
 }
 
 class SolicitudContrasena extends StatefulWidget {
-  const SolicitudContrasena({super.key});
-
+  const SolicitudContrasena({super.key, this.getEmail});
+  final getEmail;
   @override
   State<SolicitudContrasena> createState() => _SolicitudContrasenaState();
 }
-
 class _SolicitudContrasenaState extends State<SolicitudContrasena> {
   bool passwordVisible = false;
-
+  final IPass passService = PassRecoveryService();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,6 +190,7 @@ class _SolicitudContrasenaState extends State<SolicitudContrasena> {
                         padding: const EdgeInsets.only(top: 10),
                         child: TextField(
                           obscureText: true,
+                          controller: passwordController,
                           decoration: InputDecoration(
                             suffixIcon: GestureDetector(
                               onTap: () {
@@ -209,6 +221,7 @@ class _SolicitudContrasenaState extends State<SolicitudContrasena> {
                       ),
                       TextField(
                         obscureText: true,
+                        controller: passwordController,
                         decoration: InputDecoration(
                           suffixIcon: GestureDetector(
                             onTap: () {
@@ -242,7 +255,21 @@ class _SolicitudContrasenaState extends State<SolicitudContrasena> {
                       width: 300,
                       child: MaterialButton(
                         color: const Color.fromARGB(255, 103, 165, 105),
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (passwordController.text.isNotEmpty) {
+                            UserModel? user = await passService.passRecovery(passwordController.text, widget.getEmail);
+                            if (user != null) {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (_) => const HomeScreen()));
+                            }
+                            if (passwordController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Campos vacios')));
+                            }
+                          }
+                        },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                         child: const Text(

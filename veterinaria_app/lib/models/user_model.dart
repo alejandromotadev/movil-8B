@@ -1,5 +1,5 @@
 class UserModel {
   String email;
-  String token;
-  UserModel({required this.email, required this.token});
+  String name;
+  UserModel({required this.email, required this.name});
 }

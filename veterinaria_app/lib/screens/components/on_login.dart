@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import '../../models/user_model.dart';
 import '../../services/login_interface.dart';
@@ -94,7 +96,7 @@ class _OnLoginState extends State<OnLogin> {
                                 if (user != null) {
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                          builder: (_) => HomeScreen()));
+                                          builder: (_) => const HomeScreen()));
                                 }
                                 if (emailController.text.isEmpty &&
                                     passwordController.text.isEmpty) {

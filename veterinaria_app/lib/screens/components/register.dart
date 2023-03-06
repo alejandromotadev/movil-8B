@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import '../../models/user_model.dart';
 import '../../services/register_interface.dart';
@@ -16,7 +18,6 @@ class _RegisterState extends State<Register> {
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final TextEditingController conpassword = TextEditingController();
   bool passwordVisible = false;
   bool agree = false;
   @override
@@ -154,7 +155,26 @@ class _RegisterState extends State<Register> {
                         width: 300,
                         child: MaterialButton(
                           color: const Color.fromARGB(255, 103, 165, 105),
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (name.text.isNotEmpty && email.text.isNotEmpty &&
+                                password.text.isNotEmpty) {
+                              UserModel? user = await registerService.register(
+                                  name.text,
+                                  email.text,
+                                  password.text);
+                              if (user != null) {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (_) => const HomeScreen()));
+                              }
+                              if (email.text.isEmpty &&
+                                  password.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Campos vacios')));
+                              }
+                            }
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                           child: const Text(
@@ -181,7 +201,7 @@ class _RegisterState extends State<Register> {
                                   if (user != null) {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                            builder: (_) => HomeScreen()));
+                                            builder: (_) => const HomeScreen()));
                                   }
                                   if (email.text.isEmpty &&
                                       password.text.isEmpty) {

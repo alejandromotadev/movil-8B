@@ -6,19 +6,20 @@ class RegisterService extends IRegister {
   @override
   Future<UserModel?> register(
       String name, String email, String password) async {
-    final api = "https://reqres.in/api/register";
+    const api = "http://10.0.2.2:3003/api/v1/user";
     final data = {
       "name": name,
       "email": email,
       "password": password,
-      // "compassword": compassword
     };
     final dio = Dio();
     Response response;
     response = await dio.post(api, data: data);
-    if (response.statusCode == 200) {
-      final body = response.data;
-      return UserModel(email: email, token: body['token']);
+    if (response.statusCode == 201) {
+      final body = response.data['data'];
+      print(response);
+      print(body);
+      return UserModel(email: body['email'], name: body['name']);
     } else {
       return null;
     }
